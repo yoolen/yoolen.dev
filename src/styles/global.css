@@ -6,11 +6,11 @@
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
-  
+
   main {
     padding: 0;
   }
-  
+
   article {
     box-shadow: none;
     padding: 0;
