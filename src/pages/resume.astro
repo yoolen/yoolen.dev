@@ -2,172 +2,188 @@
 import Layout from "../layouts/Layout.astro";
 ---
 
-<Layout title="Resume | Terry Chern">
-  <main class="max-w-4xl mx-auto px-4 py-8">
-    <article class="bg-white shadow-lg rounded-lg p-8">
+<Layout title="Resume | Ulenn Terry Chern">
+  <main class="max-w-4xl mx-auto px-3 py-5">
+    <article class="bg-white shadow-lg rounded-lg p-6">
       <!-- Header Section -->
-      <header class="mb-6">
-        <h1 class="text-3xl font-bold mb-1 tracking-wide">Terry Chern</h1>
-        <div class="text-gray-700 text-base font-medium">
+      <header class="mb-4">
+        <h1 class="text-2xl font-bold mb-1 tracking-wide">ULENN TERRY CHERN</h1>
+        <div class="text-gray-700 text-sm font-medium">
           <span>terry@yoolen.dev</span> |
-          <span>+1.313.451.1235</span> |
-          <span>Keyport, NJ</span>
+          <span>+1-313-451-1235</span> |
+          <span>Keyport, NJ</span> |
+          <span
+            ><a
+              href="https://github.com/yoolen"
+              class="text-blue-600 hover:underline">GitHub</a
+            ></span
+          >
         </div>
       </header>
 
       <!-- Work Experience -->
-      <section class="mb-6">
+      <section class="mb-4">
         <h2
-          class="text-lg font-bold tracking-wide border-b border-gray-300 pb-1 mb-4"
+          class="text-base font-bold tracking-wide border-b border-gray-300 pb-1 mb-3"
         >
           WORK EXPERIENCE
         </h2>
-        <div class="mb-4">
+        <div class="mb-3">
           <div
             class="flex flex-col md:flex-row md:justify-between md:items-baseline"
           >
-            <span class="font-bold text-base">Nexleaf Analytics</span>
-            <span class="italic text-sm text-gray-600">Aug. 2017 - Present</span
-            >
+            <span class="font-bold text-base">NEXLEAF ANALYTICS</span>
+            <span class="text-sm text-gray-600">Los Angeles, CA (Remote)</span>
           </div>
+          <p class="text-xs italic mb-1">
+            Nexleaf Analytics is a non-profit, dedicated to leveraging
+            technology and data to solve global health challenges, serving as a
+            key partner to local organizations and Ministries of Health in
+            developing countries across the world.
+          </p>
+
           <div
             class="flex flex-col md:flex-row md:justify-between md:items-baseline"
           >
-            <span class="italic text-sm"
-              >Senior Software Engineer, Backend / Jul 2022 - Present</span
+            <span class="font-medium text-sm"
+              >Senior Software Engineer, Backend</span
             >
-            <span class="italic text-sm text-gray-600"
-              >Los Angeles, CA – Remote</span
-            >
+            <span class="text-xs text-gray-600">Jul 2022 - Present</span>
           </div>
-          <ul class="list-disc list-inside ml-4 text-gray-800 text-sm mt-1">
+          <ul class="list-disc list-outside ml-4 text-xs mt-1">
             <li>
-              Nexleaf Analytics specializes in creating technology-driven
-              solutions for global health challenges, partnering with
-              organizations in developing countries to ensure effective
-              healthcare facility monitoring and impact assessment.
+              Lead architect for AI framework using Google Gemini and RAG with
+              MyScale DB, streamlining vaccine fridge maintenance across partner
+              countries in Africa and Asia.
             </li>
             <li>
-              Lead architect, designing and implementing an AI framework using
-              Google Gemini and RAG with MyScale DB, streamlining on-site
-              vaccine fridge maintenance and automating part orders for complex
-              repairs.
+              Evaluated generative AI coding assistants (Cursor, Replit,
+              Windsurf, Copilot) by refactoring legacy APIs and tests; in the
+              process improving test coverage by 10%, code compliance by 40%,
+              and API performance by 5–20%.
             </li>
             <li>
-              Evaluating and testing generative AI tools, including Cursor,
-              Replit, Windsurf, and Copilot, by refactoring older APIs and
-              improving database queries, increasing API performance by 5-20%.
+              Developed training materials and guidelines to enhance generative
+              AI workflows, increasing code output by 30% and reducing sprint
+              overages by 50%.
             </li>
             <li>
-              Creating video and written documentation for engineering team to
-              enhance generative AI workflows, improving code consistency, test
-              coverage, and adherence to style guides; achieved a 30% increase
-              in code output and reduced sprint overages by 50%.
+              Co-developed and deployed an AI chatbot MVP using ChatGPT and
+              function calling, providing cold chain insights for 10k+ users
+              across Africa and India via web client and WhatsApp integration.
             </li>
             <li>
-              Co-developed an AI chatbot MVP for 10k+ users, using ChatGPT and
-              Langchain, with WhatsApp integration to enhance vaccine safety by
-              providing real-time outage and malfunction information across
-              Africa and India.
+              Designed and implemented integrations for temperature monitoring
+              devices with Haier (Uganda) and DHIS2 (Malawi), processing data
+              for 1,400+ devices daily. Project explained by product lead:
+              <a
+                href="https://youtu.be/ooLXL47246g?t=1600"
+                class="text-blue-600 hover:underline"
+              >
+                youtu.be/ooLXL47246g?t=1600
+              </a>.
             </li>
             <li>
-              Integrates temperature monitoring devices with Haier and DHIS2,
-              processing data for 1,400+ devices daily. Mentors junior engineers
-              in developing major integrations.
+              Refactored data pipelines for timeseries temperature data in
+              Kenya, Tanzania, and Malawi, improving performance by 5-10x using
+              Py-spy profiling and MongoDB aggregation optimizations.
             </li>
             <li>
-              Refactors data pipelines enhancing performance by 5–10x using
-              Py-spy and MongoDB optimizations.
-            </li>
-            <li>
-              Builds smart gateway framework reducing missed alerts by 10% and
-              SMS costs by 25%.
+              Built smart gateway framework for routing equipment alerts via
+              cost-effective SMS providers, reducing missed alarms by 10% and
+              SMS costs by 25% and cutting new gateway deployment times from
+              weeks to a single day.
             </li>
           </ul>
+          <div class="mt-1 text-xs italic">
+            <span class="font-medium">Stack:</span> Python, Django, MongoDB, Angular,
+            AI (Google Gemini, ChatGPT, RAG)
+          </div>
           <div
             class="flex flex-col md:flex-row md:justify-between md:items-baseline mt-2"
           >
-            <span class="italic text-sm"
-              >Software Engineer, Full Stack / Aug 2017 - Jul 2022</span
+            <span class="font-medium text-sm"
+              >Software Engineer, Full Stack</span
             >
-            <span class="italic text-sm text-gray-600"
-              >Los Angeles, CA – Remote</span
-            >
+            <span class="text-xs text-gray-600">Aug 2017 - Jul 2022</span>
           </div>
-          <ul class="list-disc list-inside ml-4 text-gray-800 text-sm mt-1">
+          <ul class="list-disc list-outside ml-4 text-xs mt-1">
             <li>
-              Streamlined installation workflow reducing install errors by 30%
-              and setup time significantly.
+              Streamlined installation workflow for field devices, reducing
+              errors by 30% and setup time from 10+ to under 3 minutes per
+              device.
             </li>
             <li>
-              Sanitized invalid data and enhanced error validation, decreasing
-              user tickets by 10%.
+              Sanitized system data and implemented robust validation with
+              detailed error messaging, reducing user tickets by 10% and errors
+              by 30%.
             </li>
             <li>
-              Migrated user-facing pages to Django REST APIs, integrating
-              Angular frontend.
+              Transitioned legacy pages to Django REST Framework APIs and led
+              Angular SPA migration.
             </li>
             <li>
-              Improved backend documentation and test coverage, aiding engineer
-              onboarding by 10%.
+              Led backend documentation and improved test coverage by 10%,
+              mentoring new engineers and creating onboarding materials to
+              accelerate ramp-up and enhance code maintainability and team
+              integration.
             </li>
           </ul>
+          <div class="mt-1 text-xs italic">
+            <span class="font-medium">Stack:</span> Python, Django, Angular, MongoDB
+          </div>
         </div>
-        <div class="mb-4">
+        <div class="mb-3">
           <div
             class="flex flex-col md:flex-row md:justify-between md:items-baseline"
           >
             <span class="font-bold text-base"
-              >New Jersey Institute of Technology</span
+              >NEW JERSEY INSTITUTE OF TECHNOLOGY</span
             >
-            <span class="italic text-sm text-gray-600"
-              >Sep. 2016 - Jun. 2021</span
-            >
+            <span class="text-xs text-gray-600">Newark, NJ</span>
           </div>
+          <p class="text-xs italic mb-1">
+            Public research university known for engineering, science, and
+            technology programs.
+          </p>
+
           <div
             class="flex flex-col md:flex-row md:justify-between md:items-baseline"
           >
-            <span class="italic text-sm">Adjunct Professor</span>
-            <span class="italic text-sm text-gray-600">Newark, NJ</span>
+            <span class="font-medium text-sm">Adjunct Professor</span>
+            <span class="text-xs text-gray-600">Sep 2016 - Jun 2021</span>
           </div>
-          <ul class="list-disc list-inside ml-4 text-gray-800 text-sm mt-1">
+          <ul class="list-disc list-outside ml-4 text-xs mt-1">
             <li>
-              NJIT is a public research university known for its courses in
-              engineering, science, and technology.
-            </li>
-            <li>
-              Taught Computer Science with Python, leading to a 10-point average
-              grade increase across cohorts.
+              Taught Computer Science with Python to undergraduate students. Led
+              to a 10-point average grade increase across cohorts.
             </li>
             <li>
               Developed curricula and new teaching methods improving student
               performance.
             </li>
-            <li>
-              Created and graded assessments, supporting academic tracking.
-            </li>
           </ul>
         </div>
-        <div class="mb-4">
+
+        <div class="mb-3">
           <div
             class="flex flex-col md:flex-row md:justify-between md:items-baseline"
           >
-            <span class="font-bold text-base">QL2 Software</span>
-            <span class="italic text-sm text-gray-600"
-              >Jul. 2016 - May 2017</span
-            >
+            <span class="font-bold text-base">QL2 SOFTWARE</span>
+            <span class="text-xs text-gray-600">New York, NY</span>
           </div>
+          <p class="text-xs italic mb-1">
+            Real-time data solutions specializing in travel and leisure
+            industries.
+          </p>
+
           <div
             class="flex flex-col md:flex-row md:justify-between md:items-baseline"
           >
-            <span class="italic text-sm">Software Developer</span>
-            <span class="italic text-sm text-gray-600">New York, NY</span>
+            <span class="font-medium text-sm">Software Developer</span>
+            <span class="text-xs text-gray-600">Jul 2016 - May 2017</span>
           </div>
-          <ul class="list-disc list-inside ml-4 text-gray-800 text-sm mt-1">
-            <li>
-              QL2 Software provides real-time data solutions specializing in
-              travel and leisure industries.
-            </li>
+          <ul class="list-disc list-outside ml-4 text-xs mt-1">
             <li>Updated client database reducing duplicate records by 40%.</li>
             <li>
               Built data validation tools decreasing incorrect hotel
@@ -177,63 +193,69 @@ import Layout from "../layouts/Layout.astro";
               Contributed to analytics initiative, cutting cloud expenses by
               15%.
             </li>
-            <li>
-              Developed RESTful APIs and dashboards using Java, ReactJS, and
-              MongoDB.
-            </li>
           </ul>
+          <div class="mt-1 text-xs italic">
+            <span class="font-medium">Stack:</span> Java, ReactJS, MongoDB
+          </div>
         </div>
       </section>
 
       <!-- Education -->
-      <section class="mb-6">
+      <section class="mb-3">
         <h2
-          class="text-lg font-bold tracking-wide border-b border-gray-300 pb-1 mb-4"
+          class="text-base font-bold tracking-wide border-b border-gray-300 pb-1 mb-2"
         >
           EDUCATION
         </h2>
-        <div class="mb-2">
+        <div class="mb-1">
           <div
             class="flex flex-col md:flex-row md:justify-between md:items-baseline"
           >
-            <span class="font-bold text-base"
-              >New Jersey Institute of Technology</span
+            <span class="font-bold text-sm"
+              >NEW JERSEY INSTITUTE OF TECHNOLOGY</span
             >
-            <span class="italic text-sm text-gray-600">2015 - 2016</span>
+            <span class="text-xs text-gray-600">Newark, NJ</span>
           </div>
           <div
             class="flex flex-col md:flex-row md:justify-between md:items-baseline"
           >
-            <span class="italic text-sm"
-              >Bachelor's Degree in Computer Science</span
-            >
-            <span class="italic text-sm text-gray-600">Newark, NJ</span>
+            <span class="text-xs">Bachelor of Science, Computer Science</span>
+            <span class="text-xs text-gray-600">2015 - 2016</span>
           </div>
         </div>
       </section>
 
       <!-- Skills & Interests -->
-      <section class="mb-2">
+      <section>
         <h2
-          class="text-lg font-bold tracking-wide border-b border-gray-300 pb-1 mb-2"
+          class="text-base font-bold tracking-wide border-b border-gray-300 pb-1 mb-2"
         >
-          SKILLS &amp; INTERESTS
+          SKILLS & INTERESTS
         </h2>
+
         <div class="mb-1">
-          <span class="font-semibold">Skills:</span>
-          <span class="text-sm">
-            Python; Rest APIs; Software Development; Software Architecture;
-            Problem Solving; Django; TypeScript; Angular; MongoDB; Generative
-            AI; Software Testing; Data Analysis; System Design; Performance
-            Optimization</span
-          >
+          <h3 class="font-bold text-xs mb-0.5">TECHNOLOGIES</h3>
+          <p class="text-xs">
+            Python, Django, REST APIs, MongoDB, TypeScript, Angular, Java,
+            ReactJS, Google Gemini, ChatGPT, RAG, MyScale DB, WhatsApp API,
+            Py-spy, DHIS2, Docker, AWS, CI/CD
+          </p>
         </div>
+
+        <div class="mb-1">
+          <h3 class="font-bold text-xs mb-0.5">SKILLS</h3>
+          <p class="text-xs">
+            Software Architecture, Problem Solving, Software Testing, Data
+            Analysis, System Design, Performance Optimization, Continuous
+            Integration, Cloud Deployment, Containerization
+          </p>
+        </div>
+
         <div>
-          <span class="font-semibold">Interests:</span>
-          <span class="text-sm"> Back-End Engineering; AI Development</span>
+          <h3 class="font-bold text-xs mb-0.5">INTERESTS</h3>
+          <p class="text-xs">Back-End Engineering, AI Development</p>
         </div>
       </section>
     </article>
   </main>
 </Layout>
-
