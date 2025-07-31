@@ -1,53 +1,85 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="About Me">
   <!-- Navigation -->
   <nav class="flex gap-6 p-4 bg-gray-50 border-b border-gray-200">
-    <a href="/" class="text-gray-600 hover:text-blue-600 transition-colors font-medium">Home</a>
+    <a
+      href="/"
+      class="text-gray-600 hover:text-blue-600 transition-colors font-medium"
+      >Home</a
+    >
     <a href="/about/" class="text-blue-600 font-semibold">About</a>
-    <a href="/resume/" class="text-gray-600 hover:text-blue-600 transition-colors font-medium">Resume</a>
+    <a
+      href="/resume/"
+      class="text-gray-600 hover:text-blue-600 transition-colors font-medium"
+      >Resume</a
+    >
   </nav>
 
   <!-- Main Content -->
-  <main class="min-h-screen bg-gray-50 p-6" style="background-image: url('/background.svg'); background-size: cover; background-repeat: no-repeat; background-attachment: fixed; background-position: center;">
+  <main
+    class="min-h-screen bg-gray-50 p-6"
+    style="background-image: url('/background.svg'); background-size: cover; background-repeat: no-repeat; background-attachment: fixed; background-position: center;"
+  >
     <div class="max-w-7xl mx-auto">
-      
       <!-- Page Header with Photo -->
       <div class="flex flex-col md:flex-row items-start gap-8 mb-8">
         <!-- Profile Photo -->
         <div class="flex-shrink-0">
-          <div class="w-32 h-32 rounded-lg overflow-hidden border border-gray-200 shadow-sm">
-            <img src="/terry.chern.webp" alt="Terry Chern" class="w-full h-full object-cover" />
+          <div
+            class="w-32 h-32 rounded-lg overflow-hidden border border-gray-200 shadow-sm"
+          >
+            <img
+              src="/terry.chern.webp"
+              alt="Terry Chern"
+              class="w-full h-full object-cover"
+            />
           </div>
         </div>
-        
+
         <!-- Header Text -->
         <div class="flex-1">
           <h1 class="text-4xl font-bold text-gray-900 mb-2">Terry Chern</h1>
-          <p class="text-xl text-blue-600 font-medium mb-3">Senior Software Engineer, Backend</p>
+          <p class="text-xl text-blue-600 font-medium mb-3">
+            Senior Software Engineer, Backend
+          </p>
           <div class="flex gap-4">
-            <a href="mailto:terry@yoolen.dev" 
-               class="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors">
+            <a
+              href="mailto:terry@yoolen.dev"
+              class="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors"
+            >
               <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                <path
+                  d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"
+                ></path>
               </svg>
               <span>Email</span>
             </a>
-            <a href="https://github.com/yoolen" 
-               class="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors"
-               target="_blank" rel="noopener noreferrer">
+            <a
+              href="https://github.com/yoolen"
+              class="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                <path
+                  d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+                ></path>
               </svg>
               <span>GitHub</span>
             </a>
-            <a href="https://www.linkedin.com/in/terrychern/" 
-               class="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors"
-               target="_blank" rel="noopener noreferrer">
+            <a
+              href="https://www.linkedin.com/in/terrychern/"
+              class="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                <path
+                  d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
+                ></path>
               </svg>
               <span>LinkedIn</span>
             </a>
@@ -78,38 +110,52 @@ import Layout from '../layouts/Layout.astro';
           System Architect & Backend Engineer
         </h2>
         <p class="text-gray-700 leading-relaxed">
-          <span class="font-semibold text-blue-600">Full-stack engineer with backend focus</span> 
-          specializing in AI frameworks, data pipeline optimization, and scalable system architecture. 
-          Currently leading AI initiatives at Nexleaf Analytics, building solutions that impact global health 
-          across Africa and Asia. Proven track record of improving system performance by 5-20x while 
-          reducing operational costs and enhancing reliability.
+          <span class="font-semibold text-blue-600"
+            >Full-stack engineer with backend focus</span
+          >
+          specializing in AI frameworks, data pipeline optimization, and scalable
+          system architecture. Currently leading AI initiatives at Nexleaf Analytics,
+          building solutions that impact global health across Africa and Asia. Proven
+          track record of improving system performance by 5-20x while reducing operational
+          costs and enhancing reliability.
         </p>
       </div>
 
       <!-- Technical Stack Grid -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        
         <!-- Backend & Systems -->
         <div class="bg-white p-6 rounded-lg border border-gray-200">
           <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
             <span class="w-2 h-2 bg-blue-600 rounded-full mr-3"></span>
             Backend & Systems
           </h3>
-          
+
           <div class="space-y-3">
             <div>
-              <div class="text-sm font-medium text-gray-700 mb-1">Languages & Frameworks</div>
-              <div class="text-sm text-gray-600">Python, Django (REST Framework), TypeScript, Java</div>
+              <div class="text-sm font-medium text-gray-700 mb-1">
+                Languages & Frameworks
+              </div>
+              <div class="text-sm text-gray-600">
+                Python, Django (REST Framework), TypeScript, Java
+              </div>
             </div>
-            
+
             <div>
-              <div class="text-sm font-medium text-gray-700 mb-1">Databases & Storage</div>
-              <div class="text-sm text-gray-600">MongoDB, MyScale DB, PostgreSQL, Redis</div>
+              <div class="text-sm font-medium text-gray-700 mb-1">
+                Databases & Storage
+              </div>
+              <div class="text-sm text-gray-600">
+                MongoDB, MyScale DB, PostgreSQL, Redis
+              </div>
             </div>
-            
+
             <div>
-              <div class="text-sm font-medium text-gray-700 mb-1">Infrastructure & DevOps</div>
-              <div class="text-sm text-gray-600">AWS, Docker, CI/CD, Performance Optimization</div>
+              <div class="text-sm font-medium text-gray-700 mb-1">
+                Infrastructure & DevOps
+              </div>
+              <div class="text-sm text-gray-600">
+                AWS, Docker, CI/CD, Performance Optimization
+              </div>
             </div>
           </div>
         </div>
@@ -120,25 +166,36 @@ import Layout from '../layouts/Layout.astro';
             <span class="w-2 h-2 bg-purple-600 rounded-full mr-3"></span>
             AI & Data Engineering
           </h3>
-          
+
           <div class="space-y-3">
             <div>
-              <div class="text-sm font-medium text-gray-700 mb-1">AI/ML Frameworks</div>
-              <div class="text-sm text-gray-600">Google Gemini, ChatGPT, RAG, LangChain</div>
+              <div class="text-sm font-medium text-gray-700 mb-1">
+                AI/ML Frameworks
+              </div>
+              <div class="text-sm text-gray-600">
+                Google Gemini, ChatGPT, RAG, LangChain
+              </div>
             </div>
-            
+
             <div>
-              <div class="text-sm font-medium text-gray-700 mb-1">Data Processing</div>
-              <div class="text-sm text-gray-600">Data Pipelines, IoT Integration, Real-time Analytics</div>
+              <div class="text-sm font-medium text-gray-700 mb-1">
+                Data Processing
+              </div>
+              <div class="text-sm text-gray-600">
+                Data Pipelines, IoT Integration, Real-time Analytics
+              </div>
             </div>
-            
+
             <div>
-              <div class="text-sm font-medium text-gray-700 mb-1">Performance Tools</div>
-              <div class="text-sm text-gray-600">py-spy, MongoDB Aggregation, API Optimization</div>
+              <div class="text-sm font-medium text-gray-700 mb-1">
+                Performance Tools
+              </div>
+              <div class="text-sm text-gray-600">
+                py-spy, MongoDB Aggregation, API Optimization
+              </div>
             </div>
           </div>
         </div>
-
       </div>
 
       <!-- Key Projects -->
@@ -147,76 +204,148 @@ import Layout from '../layouts/Layout.astro';
           <span class="w-2 h-2 bg-green-600 rounded-full mr-3"></span>
           Key Technical Projects
         </h3>
-        
+
         <div class="space-y-6">
           <div class="border-l-2 border-orange-500 pl-4">
-            <h4 class="font-semibold text-gray-900 mb-2">TechHub Service Management Platform <span class="text-xs text-blue-600 font-normal">(Latest Project)</span></h4>
+            <h4 class="font-semibold text-gray-900 mb-2">
+              TechHub Service Management Platform <span
+                class="text-xs text-blue-600 font-normal"
+                >(Latest Project)</span>
+            </h4>
             <p class="text-sm text-gray-600 mb-2">
-              Developed service management platform enabling Regional and District 
-              Immunization & Vaccine Officers to create and track maintenance service requests for cold chain equipment, 
-              streamlining healthcare infrastructure support workflows. Currently piloting in Rwanda.
+              Developed service management platform enabling Regional and
+              District Immunization & Vaccine Officers to create and track
+              maintenance service requests for cold chain equipment,
+              streamlining healthcare infrastructure support workflows.
+              Currently piloting in Rwanda.
             </p>
             <div class="flex flex-wrap gap-2">
-              <span class="px-2 py-1 bg-orange-100 text-orange-700 text-xs rounded">Django</span>
-              <span class="px-2 py-1 bg-orange-100 text-orange-700 text-xs rounded">Service Management</span>
-              <span class="px-2 py-1 bg-orange-100 text-orange-700 text-xs rounded">Workflow Automation</span>
-              <span class="px-2 py-1 bg-orange-100 text-orange-700 text-xs rounded">B2B Platform</span>
+              <span
+                class="px-2 py-1 bg-orange-100 text-orange-700 text-xs rounded"
+                >Django</span
+              >
+              <span
+                class="px-2 py-1 bg-orange-100 text-orange-700 text-xs rounded"
+                >Service Management</span
+              >
+              <span
+                class="px-2 py-1 bg-orange-100 text-orange-700 text-xs rounded"
+                >Workflow Automation</span
+              >
+              <span
+                class="px-2 py-1 bg-orange-100 text-orange-700 text-xs rounded"
+                >B2B Platform</span
+              >
             </div>
           </div>
-          
+
           <div class="border-l-2 border-blue-500 pl-4">
-            <h4 class="font-semibold text-gray-900 mb-2">AI Framework & RAG Implementation</h4>
+            <h4 class="font-semibold text-gray-900 mb-2">
+              AI Framework & RAG Implementation
+            </h4>
             <p class="text-sm text-gray-600 mb-2">
-              Lead architect for AI chatbot using Google Gemini and RAG with MyScale DB, 
-              serving 16k+ healthcare workers across Africa and India via web and WhatsApp integration.
+              Lead architect for AI chatbot using Google Gemini and RAG with
+              MyScale DB, serving 16k+ healthcare workers across Africa and
+              India via web and WhatsApp integration.
             </p>
             <div class="flex flex-wrap gap-2">
-              <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded">Google Gemini</span>
-              <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded">RAG</span>
-              <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded">MyScale DB</span>
-              <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded">WhatsApp API</span>
+              <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded"
+                >Google Gemini</span
+              >
+              <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded"
+                >RAG</span
+              >
+              <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded"
+                >MyScale DB</span
+              >
+              <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded"
+                >WhatsApp API</span
+              >
             </div>
           </div>
-          
+
           <div class="border-l-2 border-indigo-500 pl-4">
-            <h4 class="font-semibold text-gray-900 mb-2">Healthcare System Integrations</h4>
+            <h4 class="font-semibold text-gray-900 mb-2">
+              Healthcare System Integrations
+            </h4>
             <p class="text-sm text-gray-600 mb-2">
-              Designed and implemented integrations with DHIS2 (Malawi), Haier temperature monitoring devices (Uganda), 
-              and LMIS (Logistics Management Information System) for Malawi and Tanzania, enabling seamless data flow 
-              between government health systems and IoT infrastructure for vaccine cold chain monitoring.
+              Designed and implemented integrations with DHIS2 (Malawi), Haier
+              temperature monitoring devices (Uganda), and LMIS (Logistics
+              Management Information System) for Malawi and Tanzania, enabling
+              seamless data flow between government health systems and IoT
+              infrastructure for vaccine cold chain monitoring.
             </p>
             <div class="flex flex-wrap gap-2">
-              <span class="px-2 py-1 bg-indigo-100 text-indigo-700 text-xs rounded">API Integration</span>
-              <span class="px-2 py-1 bg-indigo-100 text-indigo-700 text-xs rounded">LMIS</span>
-              <span class="px-2 py-1 bg-indigo-100 text-indigo-700 text-xs rounded">Government Systems</span>
-              <span class="px-2 py-1 bg-indigo-100 text-indigo-700 text-xs rounded">Multi-Country Deployment</span>
+              <span
+                class="px-2 py-1 bg-indigo-100 text-indigo-700 text-xs rounded"
+                >API Integration</span
+              >
+              <span
+                class="px-2 py-1 bg-indigo-100 text-indigo-700 text-xs rounded"
+                >LMIS</span
+              >
+              <span
+                class="px-2 py-1 bg-indigo-100 text-indigo-700 text-xs rounded"
+                >Government Systems</span
+              >
+              <span
+                class="px-2 py-1 bg-indigo-100 text-indigo-700 text-xs rounded"
+                >Multi-Country Deployment</span
+              >
             </div>
           </div>
-          
+
           <div class="border-l-2 border-purple-500 pl-4">
-            <h4 class="font-semibold text-gray-900 mb-2">IoT Data Pipeline Optimization</h4>
+            <h4 class="font-semibold text-gray-900 mb-2">
+              IoT Data Pipeline Optimization
+            </h4>
             <p class="text-sm text-gray-600 mb-2">
-              Optimized real-time temperature data processing for 83k+ IoT devices across Kenya, 
-              Tanzania, and Malawi, achieving 5-10x performance gains with py-spy and MongoDB aggregation.
+              Optimized real-time temperature data processing for 83k+ IoT
+              devices across Kenya, Tanzania, and Malawi, achieving 5-10x
+              performance gains with py-spy and MongoDB aggregation.
             </p>
             <div class="flex flex-wrap gap-2">
-              <span class="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded">MongoDB</span>
-              <span class="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded">py-spy</span>
-              <span class="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded">IoT Integration</span>
-              <span class="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded">Real-time Processing</span>
+              <span
+                class="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded"
+                >MongoDB</span
+              >
+              <span
+                class="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded"
+                >py-spy</span
+              >
+              <span
+                class="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded"
+                >IoT Integration</span
+              >
+              <span
+                class="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded"
+                >Real-time Processing</span
+              >
             </div>
           </div>
-          
+
           <div class="border-l-2 border-green-500 pl-4">
-            <h4 class="font-semibold text-gray-900 mb-2">Smart Gateway Framework</h4>
+            <h4 class="font-semibold text-gray-900 mb-2">
+              Smart Gateway Framework
+            </h4>
             <p class="text-sm text-gray-600 mb-2">
-              Built routing framework for equipment alerts via cost-effective SMS providers, 
-              reducing missed alarms by 10%, SMS costs by 25%, and deployment time from weeks to one day.
+              Built routing framework for equipment alerts via cost-effective
+              SMS providers, reducing missed alarms by 10%, SMS costs by 25%,
+              and deployment time from weeks to one day.
             </p>
             <div class="flex flex-wrap gap-2">
-              <span class="px-2 py-1 bg-green-100 text-green-700 text-xs rounded">System Architecture</span>
-              <span class="px-2 py-1 bg-green-100 text-green-700 text-xs rounded">SMS APIs</span>
-              <span class="px-2 py-1 bg-green-100 text-green-700 text-xs rounded">Cost Optimization</span>
+              <span
+                class="px-2 py-1 bg-green-100 text-green-700 text-xs rounded"
+                >System Architecture</span
+              >
+              <span
+                class="px-2 py-1 bg-green-100 text-green-700 text-xs rounded"
+                >SMS APIs</span
+              >
+              <span
+                class="px-2 py-1 bg-green-100 text-green-700 text-xs rounded"
+                >Cost Optimization</span
+              >
             </div>
           </div>
         </div>
@@ -255,7 +384,6 @@ import Layout from '../layouts/Layout.astro';
         </div>
       </div>
       -->
-
     </div>
   </main>
 </Layout>
