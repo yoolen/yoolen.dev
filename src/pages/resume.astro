@@ -2,6 +2,14 @@
 import Layout from "../layouts/Layout.astro";
 ---
 
+<style>
+  @media print {
+    nav {
+      display: none !important;
+    }
+  }
+</style>
+
 <Layout title="Resume | Ulenn Terry Chern">
   <!-- Navigation -->
   <nav class="flex gap-6 p-4 bg-gray-50 border-b border-gray-200">
