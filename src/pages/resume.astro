@@ -2,8 +2,31 @@
 import Layout from "../layouts/Layout.astro";
 ---
 
+<style>
+  @media print {
+    nav {
+      display: none !important;
+    }
+  }
+</style>
+
 <Layout title="Resume | Ulenn Terry Chern">
-  <main class="max-w-4xl mx-auto px-3 py-5">
+  <!-- Navigation -->
+  <nav class="flex gap-6 p-4 bg-gray-50 border-b border-gray-200">
+    <a
+      href="/"
+      class="text-gray-600 hover:text-blue-600 transition-colors font-medium"
+      >Home</a
+    >
+    <a
+      href="/about/"
+      class="text-gray-600 hover:text-blue-600 transition-colors font-medium"
+      >About</a
+    >
+    <a href="/resume/" class="text-blue-600 font-semibold">Resume</a>
+  </nav>
+
+  <main class="max-w-4xl mx-auto px-3 py-5 bg-white">
     <article class="bg-white shadow-lg rounded-lg p-6">
       <!-- Header Section -->
       <header class="mb-4">
@@ -51,6 +74,13 @@ import Layout from "../layouts/Layout.astro";
           </div>
           <ul class="list-disc list-outside ml-4 text-xs mt-1">
             <li>
+              Architected and built TechHub service management platform, designing
+              RESTful APIs and backend services that enable Regional and District
+              Immunization & Vaccine Officers (RIVO/DIVO) to create and track
+              maintenance service requests for cold chain equipment across Rwanda's
+              healthcare infrastructure.
+            </li>
+            <li>
               Lead architect for AI framework using Google Gemini and RAG with
               MyScale DB, streamlining vaccine fridge maintenance across partner
               countries in Africa and Asia.
@@ -68,13 +98,16 @@ import Layout from "../layouts/Layout.astro";
             </li>
             <li>
               Co-developed and deployed an AI chatbot MVP using ChatGPT and
-              function calling, providing cold chain insights for 10k+ users
-              across Africa and India via web client and WhatsApp integration.
+              function calling, providing cold chain insights for 16k+
+              healthcare workers across Africa and India via web client and
+              WhatsApp integration.
             </li>
             <li>
-              Designed and implemented integrations for temperature monitoring
-              devices with Haier (Uganda) and DHIS2 (Malawi), processing data
-              for 1,400+ devices daily. Project explained by product lead:
+              Designed and built RESTful APIs for temperature monitoring device
+              integrations with Haier (Uganda) and DHIS2 (Malawi), serving 1,400+
+              healthcare facilities and enabling real-time cold chain monitoring
+              for Ministry of Health officials and field technicians across Uganda
+              and Malawi. Project explained by product lead:
               <a
                 href="https://youtu.be/ooLXL47246g?t=1600"
                 class="text-blue-600 hover:underline"
@@ -85,7 +118,7 @@ import Layout from "../layouts/Layout.astro";
             <li>
               Optimized data pipelines for real-time temperature data from IoT
               devices deployed across Kenya, Tanzania, and Malawi, achieving
-              5-10x performance gains with py-spy and MongoDB aggregation.
+              5-10x performance gains with py-spy, Redis caching, and MongoDB aggregation.
             </li>
             <li>
               Built smart gateway framework for routing equipment alerts via
@@ -95,7 +128,7 @@ import Layout from "../layouts/Layout.astro";
             </li>
           </ul>
           <div class="mt-1 text-xs italic">
-            <span class="font-medium">Stack:</span> Python, Django, MongoDB, Angular,
+            <span class="font-medium">Stack:</span> Python, Django, MongoDB, Redis, Angular,
             AI (Google Gemini, ChatGPT, RAG)
           </div>
           <div
@@ -190,9 +223,9 @@ import Layout from "../layouts/Layout.astro";
               Google Places API to reduce hotel data trouble tickets.
             </li>
             <li>
-              Developed RESTful APIs and admin dashboards for analytics and
-              service management, contributing to a 15% reduction in cloud
-              service expenses.
+              Designed and developed RESTful APIs serving travel industry clients,
+              enabling real-time hotel data access for booking platforms and
+              reducing operational overhead by 15%.
             </li>
           </ul>
           <div class="mt-1 text-xs italic">
@@ -237,7 +270,7 @@ import Layout from "../layouts/Layout.astro";
           <h3 class="font-bold text-xs mb-0.5">TECHNOLOGIES</h3>
           <p class="text-xs">
             Python, TypeScript, Java, Django (REST Framework), Angular, ReactJS,
-            MongoDB, MyScale DB, Postgres, REST APIs, WhatsApp API, DHIS2,
+            MongoDB, MyScale DB, PostgreSQL, Redis, REST APIs, WhatsApp API, DHIS2,
             Google Gemini, ChatGPT, RAG, LangChain, Docker, AWS, CI/CD, py-spy,
             pytest, pdb
           </p>

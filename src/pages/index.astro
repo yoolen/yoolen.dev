@@ -1,11 +1,77 @@
 ---
-
+import Layout from "../layouts/Layout.astro";
 ---
 
-<a href="/">Home</a>
-<a href="/about/">About</a>
-<a href="/blog/">Blog</a>
+<Layout title="Terry Chern - Senior Software Engineer">
+  <!-- Navigation -->
+  <nav class="flex gap-6 p-4 bg-gray-50 border-b border-gray-200">
+    <a href="/" class="text-blue-600 font-semibold">Home</a>
+    <a
+      href="/about/"
+      class="text-gray-600 hover:text-blue-600 transition-colors font-medium"
+      >About</a
+    >
+    <a
+      href="/resume/"
+      class="text-gray-600 hover:text-blue-600 transition-colors font-medium"
+      >Resume</a
+    >
+  </nav>
 
-<body>
-  <h1>My Astro Site</h1>
-</body>
+  <!-- Hero Section -->
+  <main
+    class="min-h-[calc(100vh-73px)] bg-gray-50 flex items-center justify-center p-6 pt-12"
+    style="background-image: url('/background.svg'); background-size: cover; background-repeat: no-repeat; background-position: center;"
+  >
+    <div class="text-center max-w-5xl mx-auto">
+      <!-- Name and Title -->
+      <h1 class="text-5xl font-bold text-gray-900 mb-4">Terry Chern</h1>
+      <p class="text-2xl text-blue-600 font-medium mb-8">
+        Senior Software Engineer, Backend
+      </p>
+
+      <!-- Key Stats -->
+      <div
+        class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12 max-w-2xl mx-auto"
+      >
+        <div class="bg-white p-4 rounded-lg border border-gray-200 text-center">
+          <div class="text-2xl font-bold text-blue-600">9+</div>
+          <div class="text-sm text-gray-600">Years</div>
+        </div>
+        <div class="bg-white p-4 rounded-lg border border-gray-200 text-center">
+          <div class="text-2xl font-bold text-green-600">16k+</div>
+          <div class="text-sm text-gray-600">Healthcare Workers</div>
+        </div>
+        <div class="bg-white p-4 rounded-lg border border-gray-200 text-center">
+          <div class="text-2xl font-bold text-purple-600">83k+</div>
+          <div class="text-sm text-gray-600">IoT Devices</div>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <p class="text-lg text-gray-700 mb-12 max-w-3xl mx-auto leading-relaxed">
+        Building scalable backend systems and AI solutions that impact global
+        health across Africa and Asia. Specializing in data pipeline
+        optimization, system architecture, and generative AI frameworks.
+        Currently leading technical initiatives serving 16k+ healthcare workers
+        at Nexleaf Analytics.
+      </p>
+
+      <!-- CTA Buttons -->
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a
+          href="/about/"
+          class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-medium transition-colors"
+        >
+          View Technical Details
+        </a>
+        <a
+          href="/resume/"
+          class="border border-gray-300 hover:border-gray-400 text-gray-700 hover:text-gray-900 px-8 py-3 rounded-lg font-medium transition-colors"
+        >
+          Download Resume
+        </a>
+      </div>
+    </div>
+  </main>
+</Layout>
