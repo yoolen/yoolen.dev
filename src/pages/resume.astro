@@ -7,6 +7,34 @@ import Layout from "../layouts/Layout.astro";
     nav {
       display: none !important;
     }
+    
+    /* Arial font family for entire resume */
+    * {
+      font-family: Arial, sans-serif !important;
+    }
+    
+    /* Name: 14pt bold */
+    .resume-name {
+      font-size: 14pt !important;
+    }
+    
+    /* Contact info and section headers: 12pt */
+    .resume-contact, .resume-section-header {
+      font-size: 12pt !important;
+    }
+    
+    /* Body text: 10.5pt */
+    .resume-body {
+      font-size: 10.5pt !important;
+    }
+    
+    /* Force date alignment to be horizontal */
+    div.flex {
+      display: flex !important;
+      flex-direction: row !important;
+      justify-content: space-between !important;
+      align-items: baseline !important;
+    }
   }
 </style>
 
@@ -27,11 +55,11 @@ import Layout from "../layouts/Layout.astro";
   </nav>
 
   <main class="max-w-4xl mx-auto px-3 py-5 bg-white">
-    <article class="bg-white shadow-lg rounded-lg p-6">
+    <article class="bg-white shadow-lg rounded-lg p-6 resume-body">
       <!-- Header Section -->
       <header class="mb-4">
-        <h1 class="text-2xl font-bold mb-1 tracking-wide">ULENN TERRY CHERN</h1>
-        <div class="text-gray-700 text-sm font-medium">
+        <h1 class="text-2xl font-bold mb-1 tracking-wide resume-name">ULENN TERRY CHERN</h1>
+        <div class="text-gray-700 text-sm font-medium resume-contact">
           <span>terry@yoolen.dev</span> |
           <span>+1-313-451-1235</span> |
           <span>Keyport, NJ</span> |
@@ -47,7 +75,7 @@ import Layout from "../layouts/Layout.astro";
       <!-- Work Experience -->
       <section class="mb-4">
         <h2
-          class="text-base font-bold tracking-wide border-b border-gray-300 pb-1 mb-3"
+          class="text-base font-bold tracking-wide border-b border-gray-300 pb-1 mb-3 resume-section-header"
         >
           WORK EXPERIENCE
         </h2>
@@ -237,7 +265,7 @@ import Layout from "../layouts/Layout.astro";
       <!-- Education -->
       <section class="mb-3">
         <h2
-          class="text-base font-bold tracking-wide border-b border-gray-300 pb-1 mb-2"
+          class="text-base font-bold tracking-wide border-b border-gray-300 pb-1 mb-2 resume-section-header"
         >
           EDUCATION
         </h2>
@@ -262,7 +290,7 @@ import Layout from "../layouts/Layout.astro";
       <!-- Skills & Interests -->
       <section>
         <h2
-          class="text-base font-bold tracking-wide border-b border-gray-300 pb-1 mb-2"
+          class="text-base font-bold tracking-wide border-b border-gray-300 pb-1 mb-2 resume-section-header"
         >
           SKILLS & INTERESTS
         </h2>

@@ -5,64 +5,33 @@
   body {
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
-    font-size: 11px;
     margin: 0;
     padding: 0;
   }
 
   main {
-    padding: 0 !important;
+    padding: 0.75rem !important;
     max-width: 100% !important;
   }
 
   article {
     box-shadow: none !important;
-    padding: 0.5rem !important;
+    padding: 0 !important;
     margin: 0 !important;
   }
 
-  h1 {
-    font-size: 18px !important;
-    margin-bottom: 0.25rem !important;
-  }
-
-  h2 {
-    font-size: 14px !important;
-    margin-bottom: 0.25rem !important;
-  }
-
-  h3 {
-    font-size: 12px !important;
-    margin-bottom: 0.125rem !important;
-  }
-
-  ul {
-    margin-top: 0.125rem !important;
-    margin-bottom: 0.125rem !important;
-  }
-
-  li {
-    margin-bottom: 0.125rem !important;
-  }
-
-  section {
-    margin-bottom: 0.5rem !important;
-  }
-
-  .mb-1,
-  .mb-2,
-  .mb-3,
-  .mb-4 {
-    margin-bottom: 0.25rem !important;
-  }
-
-  .mt-1,
-  .mt-2 {
-    margin-top: 0.125rem !important;
-  }
-
   @page {
-    margin: 0.5cm;
+    margin: 0.75in;
     size: letter portrait;
+  }
+  
+  /* Keep header with content */
+  header {
+    break-after: avoid;
+  }
+  
+  /* Allow sections to break naturally, but try to keep job entries together */
+  .mb-3 {
+    break-inside: avoid;
   }
 }
