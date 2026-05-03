@@ -4,6 +4,7 @@ import {
   calcPurchasePrice,
   calcNumPeriods,
   calcNumPeriodsFromDates,
+  calcNumPeriodsFromDates,
   calcShares,
   calcPriorFmvConsumed,
   calcIrsRemainingFmv,
@@ -25,6 +26,7 @@ const CURRENT_PRICE_TTL_MS = 60 * 60 * 1000;
 // ── Form state ───────────────────────────────────────────────────────────────
 const ticker = ref("");
 const offeringStartDate = ref("");
+const offeringEndDate = ref("");
 const offeringEndDate = ref("");
 const offeringStartPrice = ref<number | null>(null);
 const currentEndPrice = ref<number | null>(null);
@@ -68,7 +70,24 @@ const offeringDays = computed(() => {
   );
 });
 
+const endDateIsFuture = computed(() => {
+  if (!offeringEndDate.value) return false;
+  return new Date(offeringEndDate.value + "T00:00:00Z") > new Date();
+});
+
+const offeringDays = computed(() => {
+  if (!offeringStartDate.value || !offeringEndDate.value) return null;
+  return (
+    (new Date(offeringEndDate.value + "T00:00:00Z").getTime() -
+      new Date(offeringStartDate.value + "T00:00:00Z").getTime()) /
+    86400000
+  );
+});
+
 const numPeriods = computed(() =>
+  offeringStartDate.value && offeringEndDate.value
+    ? calcNumPeriodsFromDates(offeringStartDate.value, offeringEndDate.value, payFrequency.value)
+    : calcNumPeriods(offeringMonths.value, payFrequency.value),
   offeringStartDate.value && offeringEndDate.value
     ? calcNumPeriodsFromDates(offeringStartDate.value, offeringEndDate.value, payFrequency.value)
     : calcNumPeriods(offeringMonths.value, payFrequency.value),
@@ -353,6 +372,7 @@ const formState = computed(() => ({
   ticker: ticker.value,
   offeringStartDate: offeringStartDate.value,
   offeringEndDate: offeringEndDate.value,
+  offeringEndDate: offeringEndDate.value,
   offeringStartPrice: offeringStartPrice.value,
   currentEndPrice: currentEndPrice.value,
   paycheckGross: paycheckGross.value,
@@ -376,6 +396,7 @@ onMounted(() => {
     if (!s) return;
     if (s.ticker) ticker.value = s.ticker;
     if (s.offeringStartDate) offeringStartDate.value = s.offeringStartDate;
+    if (s.offeringEndDate) offeringEndDate.value = s.offeringEndDate;
     if (s.offeringEndDate) offeringEndDate.value = s.offeringEndDate;
     if (s.offeringStartPrice != null) offeringStartPrice.value = s.offeringStartPrice;
     if (s.currentEndPrice != null) currentEndPrice.value = s.currentEndPrice;
@@ -726,9 +747,12 @@ function fmtPct(n: number | null, decimals = 1): string {
 
         <!-- Purchase period -->
         <div :class="offeringEndDate ? 'opacity-50' : ''">
+        <div :class="offeringEndDate ? 'opacity-50' : ''">
           <label class="block text-sm font-medium text-gray-700 mb-1">Purchase Period</label>
           <select
             v-model.number="offeringMonths"
+            :disabled="!!offeringEndDate"
+            class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white disabled:cursor-not-allowed"
             :disabled="!!offeringEndDate"
             class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white disabled:cursor-not-allowed"
           >
@@ -738,6 +762,7 @@ function fmtPct(n: number | null, decimals = 1): string {
             <option :value="24">24 months</option>
           </select>
           <p class="text-xs text-gray-500 mt-1">
+            {{ offeringEndDate ? `Calculated from dates — ${numPeriods} paychecks` : 'Used when no offering end date is set.' }}
             {{ offeringEndDate ? `Calculated from dates — ${numPeriods} paychecks` : 'Used when no offering end date is set.' }}
           </p>
         </div>
