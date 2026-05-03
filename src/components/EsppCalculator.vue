@@ -13,6 +13,7 @@ import {
   calcGainPct,
   calcAnnualizedGainPct,
   type PayFrequency,
+  type LookbackType,
   type PriorPeriod,
 } from "../utils/espp";
 
@@ -32,7 +33,10 @@ const payFrequency = ref<PayFrequency>("biweekly");
 const offeringMonths = ref<3 | 6 | 12 | 24>(6);
 const contributionPct = ref(5);
 const discountPct = ref(15);
-const lookback = ref(true);
+const lookbackType = ref<LookbackType>("first_last");
+const lowestPrice = ref<number | null>(null);
+const fetchingLowest = ref(false);
+const lowestFetchError = ref("");
 const actualContributions = ref<number | null>(null);
 const priorPeriods = ref<Array<{
   date: string;
@@ -88,7 +92,8 @@ const purchasePrice = computed(() => {
     offeringStartPrice.value,
     endPrice,
     discountPct.value,
-    lookback.value,
+    lookbackType.value,
+    lowestPrice.value ?? undefined,
   );
 });
 
@@ -103,7 +108,7 @@ const priorFmvConsumed = computed(() => {
   const validPeriods: PriorPeriod[] = priorPeriods.value
     .filter((p) => p.contributions != null && p.contributions > 0 && p.endPrice != null)
     .map((p) => ({ contributions: p.contributions!, endPrice: p.endPrice! }));
-  return calcPriorFmvConsumed(validPeriods, discountPct.value, offeringStartPrice.value, lookback.value);
+  return calcPriorFmvConsumed(validPeriods, discountPct.value, offeringStartPrice.value, lookbackType.value);
 });
 
 const irsRemainingFmv = computed(() =>
@@ -154,6 +159,12 @@ const annualizedGainPct = computed(() => {
   if (!immediateGainPct.value) return null;
   const days = offeringDays.value ?? offeringMonths.value * (365.25 / 12);
   return calcAnnualizedGainPct(immediateGainPct.value, days);
+});
+
+const remainingCapAfter = computed(() => {
+  if (!sharesEstimate.value || !offeringStartPrice.value) return null;
+  const fmvThisPeriod = sharesEstimate.value * offeringStartPrice.value;
+  return Math.max(0, irsRemainingFmv.value - fmvThisPeriod);
 });
 
 // IRS progress bar (prior periods consumed)
@@ -278,6 +289,25 @@ async function fetchEndPrice() {
   }
 }
 
+async function fetchLowestPrice() {
+  if (!ticker.value || !offeringStartDate.value || !offeringEndDate.value) return;
+  fetchingLowest.value = true;
+  lowestFetchError.value = "";
+  try {
+    const res = await fetch(
+      `/api/stock?ticker=${encodeURIComponent(ticker.value)}&date=${offeringStartDate.value}&endDate=${offeringEndDate.value}`,
+    );
+    if (!res.ok) throw new Error("No API key set — enter a price manually or add your Alpha Vantage key in ⚙ Settings below");
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+    lowestPrice.value = data.price;
+  } catch (e: unknown) {
+    lowestFetchError.value = e instanceof Error ? e.message : "Network error";
+  } finally {
+    fetchingLowest.value = false;
+  }
+}
+
 async function fetchCurrentPrice() {
   if (!ticker.value) return;
   const cacheKey = `${ticker.value}:current`;
@@ -330,7 +360,8 @@ const formState = computed(() => ({
   offeringMonths: offeringMonths.value,
   contributionPct: contributionPct.value,
   discountPct: discountPct.value,
-  lookback: lookback.value,
+  lookbackType: lookbackType.value,
+  lowestPrice: lowestPrice.value,
   actualContributions: actualContributions.value,
   priorPeriods: priorPeriods.value.map(({ date, contributions, endPrice }) => ({ date, contributions, endPrice })),
 }));
@@ -353,7 +384,8 @@ onMounted(() => {
     if (s.offeringMonths) offeringMonths.value = s.offeringMonths;
     if (s.contributionPct != null) contributionPct.value = s.contributionPct;
     if (s.discountPct != null) discountPct.value = s.discountPct;
-    if (s.lookback != null) lookback.value = s.lookback;
+    if (s.lookbackType) lookbackType.value = s.lookbackType;
+    if (s.lowestPrice != null) lowestPrice.value = s.lowestPrice;
     if (s.actualContributions != null) actualContributions.value = s.actualContributions;
     if (Array.isArray(s.priorPeriods)) {
       priorPeriods.value = s.priorPeriods.map((p: { date?: string; contributions?: number | null; endPrice?: number | null }) => ({
@@ -404,116 +436,143 @@ function fmtPct(n: number | null, decimals = 1): string {
         Plan Details
       </h2>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-        <!-- Ticker -->
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Stock Ticker</label>
-          <input
-            v-model="ticker"
-            type="text"
-            placeholder="e.g. NVDA"
-            @input="ticker = ticker.toUpperCase()"
-            class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 uppercase"
-          />
-        </div>
-
-        <!-- Offering start date -->
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Offering Start Date</label>
-          <input
-            v-model="offeringStartDate"
-            type="date"
-            class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-
-        <!-- Offering end date -->
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">
-            Offering End Date
-            <span class="text-gray-400 font-normal">(purchase date)</span>
-          </label>
-          <input
-            v-model="offeringEndDate"
-            type="date"
-            class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <p v-if="offeringEndDate && offeringStartDate" class="text-xs text-gray-500 mt-1">
-            {{ numPeriods }} paychecks in this period
-          </p>
-        </div>
-
-        <!-- Start price -->
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Price at Offering Start ($)</label>
-          <div class="flex gap-2">
+      <div class="space-y-5">
+        <!-- Row 1: Ticker + Discount/Lookback -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Stock Ticker</label>
             <input
-              v-model.number="offeringStartPrice"
-              type="number"
-              step="0.01"
-              min="0"
-              placeholder="Enter manually or fetch"
-              class="flex-1 border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              v-model="ticker"
+              type="text"
+              placeholder="e.g. NVDA"
+              @input="ticker = ticker.toUpperCase()"
+              class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 uppercase"
             />
-            <button
-              @click="fetchStartPrice"
-              :disabled="!ticker || !offeringStartDate || fetchingStart"
-              class="px-3 py-2 bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-md text-xs text-gray-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed whitespace-nowrap"
-            >
-              {{ fetchingStart ? "…" : "Fetch" }}
-            </button>
           </div>
-          <p v-if="fetchingStart" class="text-xs text-blue-500 mt-1">Fetching price…</p>
-          <p v-else-if="startFetchError" class="text-xs text-red-500 mt-1">{{ startFetchError }}</p>
-          <p v-else-if="offeringStartPrice" class="text-xs text-gray-400 mt-1">Uses prior trading day close if date falls on a weekend or holiday — check your plan documents for the exact method used.</p>
-        </div>
-
-        <!-- Current / end price -->
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">
-            Current / Expected End Price ($)
-            <span class="text-gray-400 font-normal">(optional)</span>
-          </label>
-          <div class="flex gap-2">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">ESPP Discount (%)</label>
             <input
-              v-model.number="currentEndPrice"
+              v-model.number="discountPct"
               type="number"
-              step="0.01"
-              min="0"
-              placeholder="For gain estimate"
-              class="flex-1 border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              step="1"
+              min="1"
+              max="15"
+              class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            <button
-              @click="(offeringEndDate && !endDateIsFuture) ? fetchEndPrice() : fetchCurrentPrice()"
-              :disabled="!ticker || fetchingCurrent"
-              class="px-3 py-2 bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-md text-xs text-gray-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed whitespace-nowrap"
-            >
-              {{ fetchingCurrent ? "…" : (offeringEndDate && !endDateIsFuture) ? "Fetch end date" : "Fetch current" }}
-            </button>
           </div>
-          <p v-if="currentFetchError" class="text-xs text-red-500 mt-1">{{ currentFetchError }}</p>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Lookback Provision</label>
+            <select
+              v-model="lookbackType"
+              class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+            >
+              <option value="none">Purchase date only</option>
+              <option value="first_last">Lower of first or last day</option>
+              <option value="lowest">Lowest price over period</option>
+            </select>
+          </div>
         </div>
 
-        <!-- Discount % -->
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">ESPP Discount (%)</label>
-          <input
-            v-model.number="discountPct"
-            type="number"
-            step="1"
-            min="1"
-            max="15"
-            class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-
-        <!-- Lookback -->
-        <div class="flex items-center gap-3 pt-5">
-          <input v-model="lookback" id="lookback" type="checkbox" class="w-4 h-4 accent-blue-600" />
-          <label for="lookback" class="text-sm text-gray-700">
-            Lookback provision
-            <span class="text-gray-500">(use lower of start vs. end price)</span>
+        <!-- Row 2: Dates side by side -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">
+            Offering Start Date
+            <span class="text-gray-400 font-normal">(grant date)</span>
           </label>
+            <input
+              v-model="offeringStartDate"
+              type="date"
+              class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">
+              Offering End Date
+              <span class="text-gray-400 font-normal">(purchase date)</span>
+            </label>
+            <input
+              v-model="offeringEndDate"
+              type="date"
+              class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+        </div>
+
+        <!-- Row 3: Prices side by side -->
+        <div class="grid grid-cols-1 gap-5" :class="lookbackType === 'lowest' ? 'md:grid-cols-3' : 'md:grid-cols-2'">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Price at Offering Start ($)</label>
+            <div class="flex gap-2">
+              <input
+                v-model.number="offeringStartPrice"
+                type="number"
+                step="0.01"
+                min="0"
+                placeholder="Enter manually or fetch"
+                class="flex-1 border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <button
+                @click="fetchStartPrice"
+                :disabled="!ticker || !offeringStartDate || fetchingStart"
+                class="px-3 py-2 bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-md text-xs text-gray-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed whitespace-nowrap"
+              >
+                {{ fetchingStart ? "…" : "Fetch" }}
+              </button>
+            </div>
+            <p v-if="fetchingStart" class="text-xs text-blue-500 mt-1">Fetching price…</p>
+            <p v-else-if="startFetchError" class="text-xs text-red-500 mt-1">{{ startFetchError }}</p>
+            <p v-else-if="offeringStartPrice" class="text-xs text-gray-400 mt-1">Uses prior trading day close if date falls on a weekend or holiday — check your plan documents for the exact method used.</p>
+          </div>
+
+          <!-- Lowest price over period (only for "lowest" lookback) -->
+          <div v-if="lookbackType === 'lowest'">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Lowest Price Over Period ($)</label>
+            <div class="flex gap-2">
+              <input
+                v-model.number="lowestPrice"
+                type="number"
+                step="0.01"
+                min="0"
+                placeholder="Enter manually or fetch"
+                class="flex-1 border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <button
+                @click="fetchLowestPrice"
+                :disabled="!ticker || !offeringStartDate || !offeringEndDate || fetchingLowest"
+                class="px-3 py-2 bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-md text-xs text-gray-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed whitespace-nowrap"
+              >
+                {{ fetchingLowest ? "…" : "Fetch" }}
+              </button>
+            </div>
+            <p v-if="lowestFetchError" class="text-xs text-red-500 mt-1">{{ lowestFetchError }}</p>
+            <p v-else-if="!offeringEndDate" class="text-xs text-gray-400 mt-1">Set an offering end date to enable fetch.</p>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">
+              {{ endDateIsFuture || !offeringEndDate ? 'Current / Expected End Price ($)' : 'Price at Purchase Date ($)' }}
+              <span class="text-gray-400 font-normal">(optional)</span>
+            </label>
+            <div class="flex gap-2">
+              <input
+                v-model.number="currentEndPrice"
+                type="number"
+                step="0.01"
+                min="0"
+                placeholder="For gain estimate"
+                class="flex-1 border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <button
+                @click="(offeringEndDate && !endDateIsFuture) ? fetchEndPrice() : fetchCurrentPrice()"
+                :disabled="!ticker || fetchingCurrent"
+                class="px-3 py-2 bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-md text-xs text-gray-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed whitespace-nowrap"
+              >
+                {{ fetchingCurrent ? "…" : (offeringEndDate && !endDateIsFuture) ? "Fetch end date" : "Fetch current" }}
+              </button>
+            </div>
+            <p v-if="currentFetchError" class="text-xs text-red-500 mt-1">{{ currentFetchError }}</p>
+          </div>
         </div>
       </div>
     </div>
@@ -607,7 +666,7 @@ function fmtPct(n: number | null, decimals = 1): string {
               class="flex-1 border border-gray-300 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
             />
             <span v-if="period.contributions && period.endPrice && offeringStartPrice" class="text-xs text-gray-500 whitespace-nowrap">
-              → {{ fmt$(calcShares(period.contributions, calcPurchasePrice(offeringStartPrice, period.endPrice, discountPct, lookback)) * offeringStartPrice, 0) }} FMV
+              → {{ fmt$(calcShares(period.contributions, calcPurchasePrice(offeringStartPrice, period.endPrice, discountPct, lookbackType === 'lowest' ? 'first_last' : lookbackType)) * offeringStartPrice, 0) }} FMV
             </span>
           </div>
           <p v-if="period.fetchError" class="text-xs text-red-500 pl-[4.5rem]">{{ period.fetchError }}</p>
@@ -819,6 +878,12 @@ function fmtPct(n: number | null, decimals = 1): string {
           <span class="text-gray-600">Recommended max contribution %</span>
           <span class="font-medium" :class="exceedsIrsLimit ? 'text-yellow-600' : 'text-green-700'">
             {{ fmtPct(recommendedMaxPct) }}
+          </span>
+        </div>
+        <div v-if="remainingCapAfter !== null" class="flex justify-between py-2">
+          <span class="text-gray-600">IRS cap remaining after this period</span>
+          <span class="font-medium" :class="(remainingCapAfter ?? 0) < 2000 ? 'text-red-600' : 'text-gray-900'">
+            {{ fmt$(remainingCapAfter, 0) }}
           </span>
         </div>
 

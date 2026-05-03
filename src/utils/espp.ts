@@ -1,4 +1,5 @@
 export type PayFrequency = "weekly" | "biweekly" | "semimonthly" | "monthly";
+export type LookbackType = "none" | "first_last" | "lowest";
 
 const PERIODS_PER_YEAR: Record<PayFrequency, number> = {
   weekly: 52,
@@ -37,9 +38,15 @@ export function calcPurchasePrice(
   startPrice: number,
   endPrice: number,
   discountPct: number,
-  lookback: boolean,
+  lookback: LookbackType,
+  lowestPrice?: number,
 ): number {
-  const base = lookback ? Math.min(startPrice, endPrice) : endPrice;
+  let base: number;
+  switch (lookback) {
+    case "first_last": base = Math.min(startPrice, endPrice); break;
+    case "lowest":     base = lowestPrice ?? Math.min(startPrice, endPrice); break;
+    default:           base = endPrice;
+  }
   return base * (1 - discountPct / 100);
 }
 
@@ -56,14 +63,16 @@ export type PriorPeriod = {
 };
 
 // FMV consumed = shares × startPrice = (contributions / purchasePrice) × startPrice
+// For "lowest" lookback, falls back to "first_last" since per-period lowest prices aren't tracked.
 export function calcPriorFmvConsumed(
   periods: PriorPeriod[],
   discountPct: number,
   startPrice: number,
-  lookback: boolean,
+  lookback: LookbackType,
 ): number {
+  const effectiveLookback: LookbackType = lookback === "lowest" ? "first_last" : lookback;
   return periods.reduce((sum, p) => {
-    const pp = calcPurchasePrice(startPrice, p.endPrice, discountPct, lookback);
+    const pp = calcPurchasePrice(startPrice, p.endPrice, discountPct, effectiveLookback);
     return sum + calcShares(p.contributions, pp) * startPrice;
   }, 0);
 }
