@@ -3,6 +3,7 @@ import { ref, computed, watch, onMounted } from "vue";
 import {
   calcPurchasePrice,
   calcNumPeriods,
+  calcNumPeriodsFromDates,
   calcShares,
   calcPriorFmvConsumed,
   calcIrsRemainingFmv,
@@ -23,6 +24,7 @@ const CURRENT_PRICE_TTL_MS = 60 * 60 * 1000;
 // ── Form state ───────────────────────────────────────────────────────────────
 const ticker = ref("");
 const offeringStartDate = ref("");
+const offeringEndDate = ref("");
 const offeringStartPrice = ref<number | null>(null);
 const currentEndPrice = ref<number | null>(null);
 const paycheckGross = ref<number | null>(null);
@@ -48,8 +50,24 @@ const startFetchError = ref("");
 const currentFetchError = ref("");
 
 // ── Core calculations ────────────────────────────────────────────────────────
+const endDateIsFuture = computed(() => {
+  if (!offeringEndDate.value) return false;
+  return new Date(offeringEndDate.value + "T00:00:00Z") > new Date();
+});
+
+const offeringDays = computed(() => {
+  if (!offeringStartDate.value || !offeringEndDate.value) return null;
+  return (
+    (new Date(offeringEndDate.value + "T00:00:00Z").getTime() -
+      new Date(offeringStartDate.value + "T00:00:00Z").getTime()) /
+    86400000
+  );
+});
+
 const numPeriods = computed(() =>
-  calcNumPeriods(offeringMonths.value, payFrequency.value),
+  offeringStartDate.value && offeringEndDate.value
+    ? calcNumPeriodsFromDates(offeringStartDate.value, offeringEndDate.value, payFrequency.value)
+    : calcNumPeriods(offeringMonths.value, payFrequency.value),
 );
 
 const perPaycheck = computed(() => {
@@ -134,7 +152,8 @@ const immediateGainPct = computed(() => {
 
 const annualizedGainPct = computed(() => {
   if (!immediateGainPct.value) return null;
-  return calcAnnualizedGainPct(immediateGainPct.value, offeringMonths.value);
+  const days = offeringDays.value ?? offeringMonths.value * (365.25 / 12);
+  return calcAnnualizedGainPct(immediateGainPct.value, days);
 });
 
 // IRS progress bar (prior periods consumed)
@@ -246,6 +265,19 @@ async function fetchPriorPeriodPrice(index: number) {
   }
 }
 
+async function fetchEndPrice() {
+  if (!ticker.value || !offeringEndDate.value) return;
+  fetchingCurrent.value = true;
+  currentFetchError.value = "";
+  try {
+    currentEndPrice.value = await fetchHistoricalPrice(ticker.value, offeringEndDate.value);
+  } catch (e: unknown) {
+    currentFetchError.value = e instanceof Error ? e.message : "Network error";
+  } finally {
+    fetchingCurrent.value = false;
+  }
+}
+
 async function fetchCurrentPrice() {
   if (!ticker.value) return;
   const cacheKey = `${ticker.value}:current`;
@@ -290,6 +322,7 @@ async function fetchCurrentPrice() {
 const formState = computed(() => ({
   ticker: ticker.value,
   offeringStartDate: offeringStartDate.value,
+  offeringEndDate: offeringEndDate.value,
   offeringStartPrice: offeringStartPrice.value,
   currentEndPrice: currentEndPrice.value,
   paycheckGross: paycheckGross.value,
@@ -312,6 +345,7 @@ onMounted(() => {
     if (!s) return;
     if (s.ticker) ticker.value = s.ticker;
     if (s.offeringStartDate) offeringStartDate.value = s.offeringStartDate;
+    if (s.offeringEndDate) offeringEndDate.value = s.offeringEndDate;
     if (s.offeringStartPrice != null) offeringStartPrice.value = s.offeringStartPrice;
     if (s.currentEndPrice != null) currentEndPrice.value = s.currentEndPrice;
     if (s.paycheckGross != null) paycheckGross.value = s.paycheckGross;
@@ -393,6 +427,22 @@ function fmtPct(n: number | null, decimals = 1): string {
           />
         </div>
 
+        <!-- Offering end date -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">
+            Offering End Date
+            <span class="text-gray-400 font-normal">(purchase date)</span>
+          </label>
+          <input
+            v-model="offeringEndDate"
+            type="date"
+            class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <p v-if="offeringEndDate && offeringStartDate" class="text-xs text-gray-500 mt-1">
+            {{ numPeriods }} paychecks in this period
+          </p>
+        </div>
+
         <!-- Start price -->
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">Price at Offering Start ($)</label>
@@ -434,11 +484,11 @@ function fmtPct(n: number | null, decimals = 1): string {
               class="flex-1 border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <button
-              @click="fetchCurrentPrice"
+              @click="(offeringEndDate && !endDateIsFuture) ? fetchEndPrice() : fetchCurrentPrice()"
               :disabled="!ticker || fetchingCurrent"
               class="px-3 py-2 bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-md text-xs text-gray-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed whitespace-nowrap"
             >
-              {{ fetchingCurrent ? "…" : "Fetch" }}
+              {{ fetchingCurrent ? "…" : (offeringEndDate && !endDateIsFuture) ? "Fetch end date" : "Fetch current" }}
             </button>
           </div>
           <p v-if="currentFetchError" class="text-xs text-red-500 mt-1">{{ currentFetchError }}</p>
@@ -616,11 +666,12 @@ function fmtPct(n: number | null, decimals = 1): string {
         </div>
 
         <!-- Purchase period -->
-        <div>
+        <div :class="offeringEndDate ? 'opacity-50' : ''">
           <label class="block text-sm font-medium text-gray-700 mb-1">Purchase Period</label>
           <select
             v-model.number="offeringMonths"
-            class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+            :disabled="!!offeringEndDate"
+            class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white disabled:cursor-not-allowed"
           >
             <option :value="3">3 months (quarterly)</option>
             <option :value="6">6 months</option>
@@ -628,8 +679,7 @@ function fmtPct(n: number | null, decimals = 1): string {
             <option :value="24">24 months</option>
           </select>
           <p class="text-xs text-gray-500 mt-1">
-            {{ numPeriods }} paychecks in this purchase period.
-            For multi-period offerings (e.g., 24-month offering with 6-month purchases), set this to the purchase period length.
+            {{ offeringEndDate ? `Calculated from dates — ${numPeriods} paychecks` : 'Used when no offering end date is set.' }}
           </p>
         </div>
 

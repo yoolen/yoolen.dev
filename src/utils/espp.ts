@@ -14,6 +14,25 @@ export function calcNumPeriods(
   return Math.round((PERIODS_PER_YEAR[payFrequency] * offeringMonths) / 12);
 }
 
+const DAYS_PER_PERIOD: Record<PayFrequency, number> = {
+  weekly: 7,
+  biweekly: 14,
+  semimonthly: 365.25 / 24,
+  monthly: 365.25 / 12,
+};
+
+export function calcNumPeriodsFromDates(
+  startDate: string,
+  endDate: string,
+  payFrequency: PayFrequency,
+): number {
+  const days =
+    (new Date(endDate + "T00:00:00Z").getTime() -
+      new Date(startDate + "T00:00:00Z").getTime()) /
+    86400000;
+  return Math.max(1, Math.round(days / DAYS_PER_PERIOD[payFrequency]));
+}
+
 export function calcPurchasePrice(
   startPrice: number,
   endPrice: number,
@@ -82,9 +101,6 @@ export function calcGainPct(gain: number, totalContributions: number): number {
   return (gain / totalContributions) * 100;
 }
 
-export function calcAnnualizedGainPct(
-  gainPct: number,
-  offeringMonths: number,
-): number {
-  return gainPct * (12 / offeringMonths);
+export function calcAnnualizedGainPct(gainPct: number, days: number): number {
+  return gainPct * (365.25 / days);
 }

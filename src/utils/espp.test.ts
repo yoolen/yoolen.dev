@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import {
   calcPurchasePrice,
   calcNumPeriods,
+  calcNumPeriodsFromDates,
   calcShares,
   calcPriorFmvConsumed,
   calcIrsRemainingFmv,
@@ -52,6 +53,26 @@ describe("calcNumPeriods", () => {
 
   it("6-month semimonthly = 12", () => {
     expect(calcNumPeriods(6, "semimonthly")).toBe(12);
+  });
+});
+
+// ── calcNumPeriodsFromDates ───────────────────────────────────────────────────
+
+describe("calcNumPeriodsFromDates", () => {
+  it("Nov 23 – May 21 biweekly = 13", () => {
+    expect(calcNumPeriodsFromDates("2025-11-23", "2026-05-21", "biweekly")).toBe(13);
+  });
+
+  it("exact 6 months biweekly = 13", () => {
+    expect(calcNumPeriodsFromDates("2025-01-01", "2025-07-01", "biweekly")).toBe(13);
+  });
+
+  it("exact 12 months monthly = 12", () => {
+    expect(calcNumPeriodsFromDates("2025-01-01", "2026-01-01", "monthly")).toBe(12);
+  });
+
+  it("short period returns at least 1", () => {
+    expect(calcNumPeriodsFromDates("2025-01-01", "2025-01-05", "biweekly")).toBe(1);
   });
 });
 
@@ -179,7 +200,7 @@ describe("edge cases", () => {
     expect(calcRecommendedPct(999999, 1000, 13)).toBe(15);
   });
 
-  it("annualized gain: 17.65% over 6 months ≈ 35.3% annualized", () => {
-    expect(calcAnnualizedGainPct(17.65, 6)).toBeCloseTo(35.3, 1);
+  it("annualized gain: 17.65% over 182 days ≈ 35.4% annualized", () => {
+    expect(calcAnnualizedGainPct(17.65, 182)).toBeCloseTo(35.4, 1);
   });
 });
