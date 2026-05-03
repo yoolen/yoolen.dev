@@ -1,0 +1,75 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout title="Tools - Terry Chern">
+  <nav class="flex gap-6 p-4 bg-gray-50 border-b border-gray-200">
+    <a
+      href="/"
+      class="text-gray-600 hover:text-blue-600 transition-colors font-medium"
+      >Home</a
+    >
+    <a
+      href="/about/"
+      class="text-gray-600 hover:text-blue-600 transition-colors font-medium"
+      >About</a
+    >
+    <a
+      href="/resume/"
+      class="text-gray-600 hover:text-blue-600 transition-colors font-medium"
+      >Resume</a
+    >
+    <a href="/tools/" class="text-blue-600 font-semibold">Tools</a>
+  </nav>
+
+  <main class="bg-gray-50 p-6 min-h-[calc(100vh-73px)]">
+    <div class="max-w-4xl mx-auto">
+      <h1 class="text-4xl font-bold text-gray-900 mb-2">Tools</h1>
+      <p class="text-lg text-gray-600 mb-8">
+        Things I built because I needed them.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <a
+          href="/tools/espp/"
+          class="bg-white p-6 rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-sm transition-all group"
+        >
+          <div class="flex items-start gap-4">
+            <div
+              class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0"
+            >
+              <svg
+                class="w-5 h-5 text-blue-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                ></path>
+              </svg>
+            </div>
+            <div>
+              <h2
+                class="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors"
+              >
+                ESPP Calculator
+              </h2>
+              <p class="text-sm text-gray-600 mt-1">
+                Figure out how much to defer from each paycheck to maximize your
+                Employee Stock Purchase Plan benefit within IRS limits.
+              </p>
+              <span
+                class="inline-block mt-3 text-xs text-blue-600 font-medium group-hover:underline"
+                >Open calculator →</span
+              >
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </main>
+</Layout>
