@@ -1,0 +1,179 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import EsppCalculator from "../../components/EsppCalculator.vue";
+---
+
+<Layout title="ESPP Calculator - Terry Chern">
+  <nav class="flex gap-6 p-4 bg-gray-50 border-b border-gray-200">
+    <a href="/" class="text-gray-600 hover:text-blue-600 transition-colors font-medium">Home</a>
+    <a href="/about/" class="text-gray-600 hover:text-blue-600 transition-colors font-medium">About</a>
+    <a href="/resume/" class="text-gray-600 hover:text-blue-600 transition-colors font-medium">Resume</a>
+    <a href="/tools/" class="text-gray-600 hover:text-blue-600 transition-colors font-medium">Tools</a>
+  </nav>
+
+  <main class="bg-gray-50 p-6 min-h-[calc(100vh-73px)]">
+    <div class="max-w-3xl mx-auto">
+
+      <!-- Header -->
+      <div class="mb-6">
+        <a href="/tools/" class="text-sm text-gray-500 hover:text-blue-600 transition-colors">← Tools</a>
+        <h1 class="text-4xl font-bold text-gray-900 mt-2 mb-1">ESPP Calculator</h1>
+        <p class="text-gray-600">
+          Figure out how much to defer each paycheck to maximize your Employee Stock Purchase Plan.
+          Stock prices can be fetched automatically or entered manually.
+        </p>
+      </div>
+
+      <!-- Calculator -->
+      <EsppCalculator client:load />
+
+      <!-- ── How ESPPs Work ──────────────────────────────────────────────── -->
+      <details class="mt-8 bg-white rounded-lg border border-gray-200">
+        <summary class="p-6 cursor-pointer select-none flex items-center justify-between">
+          <span class="text-lg font-bold text-gray-900">How ESPPs Work</span>
+          <svg class="w-5 h-5 text-gray-400 transition-transform details-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </summary>
+        <div class="px-6 pb-6 space-y-4 text-sm text-gray-700 border-t border-gray-100 pt-4">
+
+          <div>
+            <h3 class="font-semibold text-gray-900 mb-1">The basic mechanism</h3>
+            <p>You authorize your employer to withhold a percentage of each paycheck (post-tax). At the end of each <em>purchase period</em>, your accumulated contributions are used to purchase company stock at a discount — usually 10–15% off market price — and the shares are delivered to you.</p>
+          </div>
+
+          <div>
+            <h3 class="font-semibold text-gray-900 mb-1">Key terms</h3>
+            <ul class="list-disc list-inside space-y-1.5">
+              <li><strong>Offering period:</strong> The overall enrollment window — often 12 or 24 months. The stock price at the start of this period is the one used for the lookback provision. One offering period may contain several purchase periods.</li>
+              <li><strong>Purchase period:</strong> The sub-period during which your payroll deductions accumulate for one purchase. Typically 3 or 6 months. This is what the calculator calls "Purchase Period."</li>
+              <li><strong>Purchase date:</strong> The last day of the purchase period, when shares are actually bought on your behalf.</li>
+              <li><strong>Purchase price:</strong> The discounted price you pay per share on the purchase date — typically the lower of the offering start price or the purchase date price, minus the discount.</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="font-semibold text-gray-900 mb-1">The lookback provision</h3>
+            <p>Most plans include a lookback: the purchase price is based on the <strong>lower</strong> of the stock price at the beginning of the <em>offering period</em> or the end of the <em>purchase period</em>, then discounted further. This means even if the stock drops, you buy at the lower price — and even if it rises, you lock in the original lower start price.</p>
+            <p class="mt-1 text-gray-500 text-xs">In the calculator: "Offering Start Date" should be the first day of your overall offering period (not the purchase period start). For single-period plans these are the same date.</p>
+          </div>
+
+          <div>
+            <h3 class="font-semibold text-gray-900 mb-1">Why the math gets complex</h3>
+            <p>Five variables interact: offering period start price, purchase period end price, the lookback provision, the discount %, your pay frequency, and the IRS annual cap. A stock that drops makes the lookback attractive but consumes your IRS cap faster. A rising stock is pure upside. The IRS cap is shared across all purchase periods within a calendar year — not split evenly.</p>
+          </div>
+
+          <div>
+            <h3 class="font-semibold text-gray-900 mb-1">Minimum and maximum gains (if you sell immediately)</h3>
+            <ul class="list-disc list-inside space-y-1">
+              <li><strong>Minimum:</strong> The discount alone, which compounds to <code>discount / (1 − discount)</code>. At 15% off: that's <strong>17.6%</strong> on every dollar you contribute — regardless of stock movement — if you sell the day of purchase.</li>
+              <li><strong>Maximum:</strong> Uncapped. If the stock doubled during your offering period, you buy at the start price (via lookback) and sell at 2×. The discount is on top of that appreciation.</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="font-semibold text-gray-900 mb-1">The IRS $25,000 cap</h3>
+            <p>Under IRC Section 423, you can't receive more than $25,000 worth of stock (valued at the <em>offering start price</em>) per calendar year across all ESPP periods. This caps how much you can contribute — especially if your salary is high or your contribution rate is high. The cap is consumed proportionally faster when the stock price has dropped (because you bought more shares at a lower price, but the IRS counts each share at the higher start price).</p>
+          </div>
+
+          <div>
+            <h3 class="font-semibold text-gray-900 mb-1">Tax treatment (brief note)</h3>
+            <p>Tax rules for ESPPs are nuanced. Generally: the discount portion at purchase is taxed as ordinary income; gains above that may qualify as capital gains depending on your holding period. Consult a tax advisor for your specific situation.</p>
+          </div>
+
+        </div>
+      </details>
+
+      <!-- ── Examples ───────────────────────────────────────────────────── -->
+      <details class="mt-4 bg-white rounded-lg border border-gray-200">
+        <summary class="p-6 cursor-pointer select-none flex items-center justify-between">
+          <span class="text-lg font-bold text-gray-900">Examples</span>
+          <svg class="w-5 h-5 text-gray-400 transition-transform details-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </summary>
+        <div class="px-6 pb-6 border-t border-gray-100 pt-4 space-y-6">
+          <p class="text-xs text-gray-500">All examples assume: $10,000 contributed over the purchase period, 15% discount, lookback on, selling immediately on the purchase date. "Start" refers to the offering period start price used for the lookback.</p>
+
+          <!-- Example 1: Flat -->
+          <div>
+            <h3 class="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+              <span class="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs rounded-full">1</span>
+              Flat market — start $100, end $100
+            </h3>
+            <div class="font-mono text-xs bg-gray-50 border border-gray-200 rounded p-4 space-y-1 text-gray-600">
+              <div>Purchase price:    $100 × 0.85 = <strong>$85/share</strong></div>
+              <div>Shares purchased:  $10,000 ÷ $85 = <strong>117.6 shares</strong></div>
+              <div>Value at sale:     117.6 × $100 = $11,765</div>
+              <div>Gain:              $11,765 − $10,000 = <strong class="text-green-700">+$1,765 (+17.6%)</strong></div>
+              <div class="pt-2 border-t border-gray-200">IRS FMV consumed:  117.6 × $100 = $11,765 of $25,000 cap</div>
+              <div>Remaining cap:     <strong>$13,235</strong> for a second period this year</div>
+            </div>
+            <p class="mt-3 text-sm text-gray-700 bg-blue-50 border border-blue-100 rounded p-3">
+              <strong>Takeaway:</strong> Even when nothing happens, you pocket the 15% discount as pure profit.
+              With $13,235 of IRS cap remaining, you have plenty of headroom to participate fully in a second offering period.
+            </p>
+          </div>
+
+          <!-- Example 2: Rising -->
+          <div>
+            <h3 class="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+              <span class="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded-full">2</span>
+              Stock rises sharply — start $100, end $130 (+30%)
+            </h3>
+            <div class="font-mono text-xs bg-gray-50 border border-gray-200 rounded p-4 space-y-1 text-gray-600">
+              <div>Lookback uses:     min($100, $130) = <strong>$100</strong></div>
+              <div>Purchase price:    $100 × 0.85 = <strong>$85/share</strong></div>
+              <div>Shares purchased:  $10,000 ÷ $85 = <strong>117.6 shares</strong> (same as flat)</div>
+              <div>Value at sale:     117.6 × $130 = $15,294</div>
+              <div>Gain:              $15,294 − $10,000 = <strong class="text-green-700">+$5,294 (+52.9%)</strong></div>
+              <div class="pt-2 border-t border-gray-200">IRS FMV consumed:  117.6 × $100 = $11,765 — <strong>same as flat!</strong></div>
+              <div>Remaining cap:     <strong>$13,235</strong> — same headroom despite bigger gain</div>
+            </div>
+            <p class="mt-3 text-sm text-gray-700 bg-green-50 border border-green-100 rounded p-3">
+              <strong>Takeaway:</strong> Best case. Lookback locks you into the lower start price even though the stock surged.
+              You capture both the appreciation and the discount. Crucially, a rising stock doesn't consume your IRS cap any faster — the cap is measured at start price, not end price.
+            </p>
+          </div>
+
+          <!-- Example 3: Falling -->
+          <div>
+            <h3 class="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+              <span class="px-2 py-0.5 bg-red-100 text-red-700 text-xs rounded-full">3</span>
+              Stock drops sharply — start $100, end $60 (−40%)
+            </h3>
+            <div class="font-mono text-xs bg-gray-50 border border-gray-200 rounded p-4 space-y-1 text-gray-600">
+              <div>Lookback uses:     min($100, $60) = <strong>$60</strong></div>
+              <div>Purchase price:    $60 × 0.85 = <strong>$51/share</strong></div>
+              <div>Shares purchased:  $10,000 ÷ $51 = <strong>196 shares</strong> (more than flat!)</div>
+              <div>Value at sale:     196 × $60 = $11,765</div>
+              <div>Gain:              $11,765 − $10,000 = <strong class="text-green-700">+$1,765 (+17.6%)</strong> (same as flat — discount always protects you)</div>
+              <div class="pt-2 border-t border-gray-200">IRS FMV consumed:  196 × $100 (start price!) = <strong class="text-red-700">$19,600</strong></div>
+              <div>Remaining cap:     <strong class="text-yellow-700">$5,400</strong> — nearly gone for a second period</div>
+            </div>
+            <p class="mt-3 text-sm text-gray-700 bg-red-50 border border-red-100 rounded p-3">
+              <strong>Takeaway:</strong> The immediate gain is still 17.6% if you sell right away — the discount protects you.
+              But the IRS values your shares at the <em>$100 start price</em>, not the $60 you paid.
+              You bought 196 shares cheaply, but each one "costs" $100 of your annual IRS cap.
+              A 40% drop in Period 1 leaves only $5,400 of cap — you'd be capped at a much lower contribution rate in Period 2.
+            </p>
+          </div>
+
+        </div>
+      </details>
+
+      <!-- Disclaimer -->
+      <p class="mt-6 text-xs text-gray-400 text-center">
+        This calculator is for informational purposes only and does not constitute financial advice.
+        ESPP rules vary by employer plan — consult your plan documents and a qualified tax advisor for decisions specific to your situation.
+      </p>
+
+    </div>
+  </main>
+</Layout>
+
+<style>
+details[open] .details-arrow {
+  transform: rotate(180deg);
+}
+</style>
