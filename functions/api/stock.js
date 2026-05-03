@@ -25,7 +25,7 @@ function findClosestTradingDay(series, targetDate) {
   return null;
 }
 
-async function fetchYahoo(ticker, date) {
+async function fetchYahoo(ticker, date, endDate = null) {
   const range = date ? "2y" : "5d";
   const url = `https://query1.finance.yahoo.com/v8/finance/chart/${ticker}?interval=1d&range=${range}`;
   const res = await fetch(url, {
@@ -35,12 +35,23 @@ async function fetchYahoo(ticker, date) {
   const result = data?.chart?.result?.[0];
   if (!result) throw new Error("No data from Yahoo Finance");
 
-  if (date) {
-    const timestamps = result.timestamp;
-    const closes = result.indicators.quote[0].close;
-    const targetTs = new Date(date + "T23:59:59Z").getTime() / 1000;
+  const timestamps = result.timestamp;
+  const closes = result.indicators.quote[0].close;
 
-    // Find last trading day at or before the target date
+  if (date && endDate) {
+    // Lowest close between date and endDate (inclusive)
+    const startTs = new Date(date + "T00:00:00Z").getTime() / 1000;
+    const endTs = new Date(endDate + "T23:59:59Z").getTime() / 1000;
+    let lowest = null;
+    for (let i = 0; i < timestamps.length; i++) {
+      if (timestamps[i] >= startTs && timestamps[i] <= endTs && closes[i] != null) {
+        if (lowest === null || closes[i] < lowest) lowest = closes[i];
+      }
+    }
+    if (lowest === null) throw new Error("No trading data found in that date range");
+    return lowest;
+  } else if (date) {
+    const targetTs = new Date(date + "T23:59:59Z").getTime() / 1000;
     let bestIdx = -1;
     for (let i = 0; i < timestamps.length; i++) {
       if (timestamps[i] <= targetTs) bestIdx = i;
@@ -82,6 +93,7 @@ export async function onRequestGet({ request, env }) {
   const { searchParams } = new URL(request.url);
   const ticker = searchParams.get("ticker")?.toUpperCase();
   const date = searchParams.get("date") || null;
+  const endDate = searchParams.get("endDate") || null;
 
   if (!ticker) {
     return new Response(JSON.stringify({ error: "Missing ticker" }), {
@@ -95,7 +107,7 @@ export async function onRequestGet({ request, env }) {
     let source = "yahoo";
 
     try {
-      price = await fetchYahoo(ticker, date);
+      price = await fetchYahoo(ticker, date, endDate);
     } catch (yahooErr) {
       if (env.ALPHA_VANTAGE_KEY) {
         source = "alphavantage";
