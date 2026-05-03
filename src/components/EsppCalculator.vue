@@ -415,6 +415,7 @@ function fmtPct(n: number | null, decimals = 1): string {
           </div>
           <p v-if="fetchingStart" class="text-xs text-blue-500 mt-1">Fetching price…</p>
           <p v-else-if="startFetchError" class="text-xs text-red-500 mt-1">{{ startFetchError }}</p>
+          <p v-else-if="offeringStartPrice" class="text-xs text-gray-400 mt-1">Uses prior trading day close if date falls on a weekend or holiday — check your plan documents for the exact method used.</p>
         </div>
 
         <!-- Current / end price -->
@@ -560,6 +561,7 @@ function fmtPct(n: number | null, decimals = 1): string {
             </span>
           </div>
           <p v-if="period.fetchError" class="text-xs text-red-500 pl-[4.5rem]">{{ period.fetchError }}</p>
+          <p v-else-if="period.endPrice" class="text-xs text-gray-400 pl-[4.5rem]">Uses prior trading day close if date falls on a weekend or holiday — check your plan documents for the exact method used.</p>
         </div>
       </div>
 
