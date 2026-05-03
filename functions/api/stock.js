@@ -26,7 +26,7 @@ function findClosestTradingDay(series, targetDate) {
 }
 
 async function fetchYahoo(ticker, date) {
-  const range = date ? "5y" : "5d";
+  const range = date ? "2y" : "5d";
   const url = `https://query1.finance.yahoo.com/v8/finance/chart/${ticker}?interval=1d&range=${range}`;
   const res = await fetch(url, {
     headers: { "User-Agent": "Mozilla/5.0" },
